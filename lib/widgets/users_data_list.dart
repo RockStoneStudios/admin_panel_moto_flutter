@@ -18,7 +18,7 @@ class _UsersDataListState extends State<UsersDataList> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: usersRecordsFromDatabase.onValue,
-      builder: (BuildContext context, snapshotData) {
+      builder: (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshotData) {
         if (snapshotData.hasError) {
           return const Center(
             child: Text(
@@ -38,7 +38,21 @@ class _UsersDataListState extends State<UsersDataList> {
           );
         }
 
-        Map dataMap = snapshotData.data!.snapshot.value as Map;
+        // Verificar si snapshot.data?.snapshot.value es null o no
+        if (snapshotData.data?.snapshot.value == null) {
+          return const Center(
+            child: Text(
+              "No data available.",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
+              ),
+            ),
+          );
+        }
+
+        Map dataMap = Map<String, dynamic>.from(snapshotData.data!.snapshot.value as Map);
         List itemsList = [];
         dataMap.forEach((key, value) {
           itemsList.add({"key": key, ...value});
@@ -71,41 +85,41 @@ class _UsersDataListState extends State<UsersDataList> {
                   1,
                   itemsList[index]["blockStatus"] == "no"
                       ? ElevatedButton(
-                          onPressed: () async {
-                            await FirebaseDatabase.instance
-                                .ref()
-                                .child("users")
-                                .child(itemsList[index]["id"])
-                                .update({
-                              "blockStatus": "yes",
-                            });
-                          },
-                          child: const Text(
-                            "Block",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
+                    onPressed: () async {
+                      await FirebaseDatabase.instance
+                          .ref()
+                          .child("users")
+                          .child(itemsList[index]["id"])
+                          .update({
+                        "blockStatus": "yes",
+                      });
+                    },
+                    child: const Text(
+                      "Block",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
                       : ElevatedButton(
-                          onPressed: () async {
-                            await FirebaseDatabase.instance
-                                .ref()
-                                .child("users")
-                                .child(itemsList[index]["id"])
-                                .update({
-                              "blockStatus": "no",
-                            });
-                          },
-                          child: const Text(
-                            "Approve",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                    onPressed: () async {
+                      await FirebaseDatabase.instance
+                          .ref()
+                          .child("users")
+                          .child(itemsList[index]["id"])
+                          .update({
+                        "blockStatus": "no",
+                      });
+                    },
+                    child: const Text(
+                      "Approve",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             );
