@@ -11,7 +11,8 @@ class DriversDataList extends StatefulWidget {
 }
 
 class _DriversDataListState extends State<DriversDataList> {
-  final driversRecordsFromDatabase = FirebaseDatabase.instance.ref().child("drivers");
+  final driversRecordsFromDatabase =
+      FirebaseDatabase.instance.ref().child("drivers");
   CommonMethods cMethods = CommonMethods();
 
   @override
@@ -51,7 +52,8 @@ class _DriversDataListState extends State<DriversDataList> {
           );
         }
 
-        Map<String, dynamic> dataMap = Map<String, dynamic>.from(snapshotData.data!.snapshot.value as Map);
+        Map<String, dynamic> dataMap =
+            Map<String, dynamic>.from(snapshotData.data!.snapshot.value as Map);
         List<Map<String, dynamic>> itemsList = dataMap.entries.map((entry) {
           var value = Map<String, dynamic>.from(entry.value);
           value["id"] = entry.key; // Ensure the ID is included
@@ -74,27 +76,25 @@ class _DriversDataListState extends State<DriversDataList> {
                   2,
                   Text(item["id"].toString()),
                 ),
-
                 cMethods.data(
-                  1,
+                    1,
                     ImageNetwork(
                       image: item["photo"].toString(),
-                      width: 50,
-                      height: 50,
+                      width: 60,
+                      height: 60,
                       onError: const Icon(
                         Icons.error,
                         color: Colors.red,
                       ),
-
-                    )
-                ),
+                    )),
                 cMethods.data(
                   1,
                   Text(item["name"].toString()),
                 ),
                 cMethods.data(
                   1,
-                  Text("${carDetails["carModel"] ?? 'N/A'} - ${carDetails["carNumber"] ?? 'N/A'}"),
+                  Text(
+                      "${carDetails["carModel"] ?? 'N/A'} - ${carDetails["carNumber"] ?? 'N/A'}"),
                 ),
                 cMethods.data(
                   1,
@@ -108,33 +108,37 @@ class _DriversDataListState extends State<DriversDataList> {
                   1,
                   item["blockStatus"] == "no"
                       ? ElevatedButton(
-                    onPressed: () async {
-                      await driversRecordsFromDatabase.child(item["id"]).update({
-                        "blockStatus": "yes",
-                      });
-                    },
-                    child: const Text(
-                      "Block",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                          onPressed: () async {
+                            await driversRecordsFromDatabase
+                                .child(item["id"])
+                                .update({
+                              "blockStatus": "yes",
+                            });
+                          },
+                          child: const Text(
+                            "Block",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
                       : ElevatedButton(
-                    onPressed: () async {
-                      await driversRecordsFromDatabase.child(item["id"]).update({
-                        "blockStatus": "no",
-                      });
-                    },
-                    child: const Text(
-                      "Approve",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                          onPressed: () async {
+                            await driversRecordsFromDatabase
+                                .child(item["id"])
+                                .update({
+                              "blockStatus": "no",
+                            });
+                          },
+                          child: const Text(
+                            "Approve",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                 ),
               ],
             );
