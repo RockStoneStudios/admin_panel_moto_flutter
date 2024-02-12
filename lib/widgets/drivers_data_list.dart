@@ -23,7 +23,7 @@ class _DriversDataListState extends State<DriversDataList> {
         if (snapshotData.hasError) {
           return const Center(
             child: Text(
-              "Error Occurred. Try Later.",
+              "Ocurrio un Error. Intenta luego...",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
@@ -42,7 +42,7 @@ class _DriversDataListState extends State<DriversDataList> {
         if (snapshotData.data?.snapshot.value == null) {
           return const Center(
             child: Text(
-              "No data available.",
+              "Datos no disponibles.",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
@@ -80,8 +80,9 @@ class _DriversDataListState extends State<DriversDataList> {
                     1,
                     ImageNetwork(
                       image: item["photo"].toString(),
-                      width: 60,
-                      height: 60,
+                      width: 90,
+                      height: 90,
+                      fitWeb: BoxFitWeb.fill,
                       onError: const Icon(
                         Icons.error,
                         color: Colors.red,
@@ -108,6 +109,8 @@ class _DriversDataListState extends State<DriversDataList> {
                   1,
                   item["blockStatus"] == "no"
                       ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pink[400]),
                           onPressed: () async {
                             await driversRecordsFromDatabase
                                 .child(item["id"])
@@ -116,7 +119,7 @@ class _DriversDataListState extends State<DriversDataList> {
                             });
                           },
                           child: const Text(
-                            "Block",
+                            "Bloquear",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -124,6 +127,8 @@ class _DriversDataListState extends State<DriversDataList> {
                           ),
                         )
                       : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pink[400]),
                           onPressed: () async {
                             await driversRecordsFromDatabase
                                 .child(item["id"])
@@ -132,7 +137,7 @@ class _DriversDataListState extends State<DriversDataList> {
                             });
                           },
                           child: const Text(
-                            "Approve",
+                            "Aprovar",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

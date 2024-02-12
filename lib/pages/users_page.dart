@@ -35,11 +35,11 @@ class _UsersPageState extends State<UsersPage> {
           ),
           Row(
             children: [
-              cMethods.header(2, "User ID"),
-              cMethods.header(1, "User Name"),
-              cMethods.header(1, "User Email"),
-              cMethods.header(1, "Phone"),
-              cMethods.header(1, "Action"),
+              cMethods.header(2, "Usuario ID"),
+              cMethods.header(1, "Nombre Usuario"),
+              cMethods.header(1, "Email Usuario"),
+              cMethods.header(1, "Celular"),
+              cMethods.header(1, "Acciones"),
             ],
           ),
           const UsersDataList(),

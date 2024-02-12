@@ -50,15 +50,15 @@ class _SideNavigationDrawerState extends State<SideNavigationDrawer> {
       sideBar: SideBar(
         items: const [
           AdminMenuItem(
-              title: "Drivers",
+              title: "Conductores",
               route: DriversPage.id,
               icon: CupertinoIcons.car_detailed),
           AdminMenuItem(
-              title: "Users",
+              title: "Usuarios",
               route: UsersPage.id,
               icon: CupertinoIcons.person_2_fill),
           AdminMenuItem(
-              title: "Trips",
+              title: "Viajes",
               route: TripsPage.id,
               icon: CupertinoIcons.graph_square)
         ],

@@ -34,13 +34,13 @@ class _TripsPageState extends State<TripsPage> {
           ),
           Row(
             children: [
-              cMethods.header(2, "Trip ID"),
-              cMethods.header(1, "User Name"),
-              cMethods.header(1, "Driver Name"),
-              cMethods.header(1, "Car Details"),
-              cMethods.header(1, "Timings"),
-              cMethods.header(1, "Fare"),
-              cMethods.header(1, "View Details")
+              cMethods.header(2, "Viaje ID"),
+              cMethods.header(1, "Nombre Usuario"),
+              cMethods.header(1, "Nombre Conductor"),
+              cMethods.header(1, "MotoTaxi Detalles"),
+              cMethods.header(1, "Tiempos"),
+              cMethods.header(1, "Tarifa"),
+              cMethods.header(1, "Ver Detalles")
             ],
           )
         ],

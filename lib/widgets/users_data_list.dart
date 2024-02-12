@@ -18,7 +18,8 @@ class _UsersDataListState extends State<UsersDataList> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: usersRecordsFromDatabase.onValue,
-      builder: (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshotData) {
+      builder:
+          (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshotData) {
         if (snapshotData.hasError) {
           return const Center(
             child: Text(
@@ -52,7 +53,8 @@ class _UsersDataListState extends State<UsersDataList> {
           );
         }
 
-        Map dataMap = Map<String, dynamic>.from(snapshotData.data!.snapshot.value as Map);
+        Map dataMap =
+            Map<String, dynamic>.from(snapshotData.data!.snapshot.value as Map);
         List itemsList = [];
         dataMap.forEach((key, value) {
           itemsList.add({"key": key, ...value});
@@ -85,41 +87,45 @@ class _UsersDataListState extends State<UsersDataList> {
                   1,
                   itemsList[index]["blockStatus"] == "no"
                       ? ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseDatabase.instance
-                          .ref()
-                          .child("users")
-                          .child(itemsList[index]["id"])
-                          .update({
-                        "blockStatus": "yes",
-                      });
-                    },
-                    child: const Text(
-                      "Block",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pink[300]),
+                          onPressed: () async {
+                            await FirebaseDatabase.instance
+                                .ref()
+                                .child("users")
+                                .child(itemsList[index]["id"])
+                                .update({
+                              "blockStatus": "yes",
+                            });
+                          },
+                          child: const Text(
+                            "Bloquear",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
                       : ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseDatabase.instance
-                          .ref()
-                          .child("users")
-                          .child(itemsList[index]["id"])
-                          .update({
-                        "blockStatus": "no",
-                      });
-                    },
-                    child: const Text(
-                      "Approve",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pink[400]),
+                          onPressed: () async {
+                            await FirebaseDatabase.instance
+                                .ref()
+                                .child("users")
+                                .child(itemsList[index]["id"])
+                                .update({
+                              "blockStatus": "no",
+                            });
+                          },
+                          child: const Text(
+                            "Aprobar",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                 ),
               ],
             );

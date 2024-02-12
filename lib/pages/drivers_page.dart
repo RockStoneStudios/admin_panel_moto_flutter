@@ -34,16 +34,16 @@ class _DriverPageState extends State<DriversPage> {
           ),
           Row(
             children: [
-              cMethods.header(2, "Driver ID"),
-              cMethods.header(1, "Picture"),
-              cMethods.header(1, "Name"),
-              cMethods.header(1, "Car Details"),
-              cMethods.header(1, "Phone"),
-              cMethods.header(1, "Total Earnings"),
-              cMethods.header(1, "Actions")
+              cMethods.header(2, "Conductor ID"),
+              cMethods.header(1, "Foto"),
+              cMethods.header(1, "Nombre"),
+              cMethods.header(1, "MotoTaxi Detalles"),
+              cMethods.header(1, "Celular"),
+              cMethods.header(1, "Total Viaje"),
+              cMethods.header(1, "Acciones")
             ],
           ),
-          DriversDataList()
+          const DriversDataList()
         ],
       ),
     ));
