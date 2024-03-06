@@ -85,47 +85,47 @@ class _UsersDataListState extends State<UsersDataList> {
                 ),
                 cMethods.data(
                   1,
-                  itemsList[index]["blockStatus"] == "no"
-                      ? ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.pink[300]),
-                          onPressed: () async {
-                            await FirebaseDatabase.instance
-                                .ref()
-                                .child("users")
-                                .child(itemsList[index]["id"])
-                                .update({
-                              "blockStatus": "yes",
-                            });
-                          },
-                          child: const Text(
-                            "Bloquear",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.pink[400]),
-                          onPressed: () async {
-                            await FirebaseDatabase.instance
-                                .ref()
-                                .child("users")
-                                .child(itemsList[index]["id"])
-                                .update({
-                              "blockStatus": "no",
-                            });
-                          },
-                          child: const Text(
-                            "Aprobar",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+            itemsList[index]["blockStatus"] == "no"
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.pink[300]),
+                    onPressed: () async {
+                      await FirebaseDatabase.instance
+                          .ref()
+                          .child("users")
+                          .child(itemsList[index]["id"])
+                          .update({
+                        "blockStatus": "yes",
+                      });
+                    },
+                    child: const Text(
+                      "Bloquear",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.pink[400]),
+                    onPressed: () async {
+                      await FirebaseDatabase.instance
+                          .ref()
+                          .child("users")
+                          .child(itemsList[index]["id"])
+                          .update({
+                        "blockStatus": "no",
+                      });
+                    },
+                    child: const Text(
+                      "Aprobar",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             );
