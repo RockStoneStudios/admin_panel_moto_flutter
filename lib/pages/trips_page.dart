@@ -38,7 +38,7 @@ class _TripsPageState extends State<TripsPage> {
               cMethods.header(1, "Nombre Usuario"),
               cMethods.header(1, "Nombre Conductor"),
               cMethods.header(1, "MotoTaxi Detalles"),
-              cMethods.header(1, "Tiempos"),
+              cMethods.header(1, "Tiempo"),
               cMethods.header(1, "Tarifa"),
               cMethods.header(1, "Ver Detalles")
             ],
