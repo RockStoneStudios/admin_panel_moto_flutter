@@ -11,23 +11,15 @@ class TripsDataList extends StatefulWidget {
 }
 
 class _TripsDataListState extends State<TripsDataList> {
-  final completedTripsRecordsFromDatabase =
-      FirebaseDatabase.instance.ref().child("tripRequests");
+  final completedTripsRecordsFromDatabase = FirebaseDatabase.instance.ref().child("tripRequests");
   CommonMethods cMethods = CommonMethods();
 
-  launchGoogleMapFromSourceToDestination(
-    pickUpLat,
-    pickUpLng,
-    dropOffLat,
-    dropOffLng,
-  ) async {
-    String directionAPIUrl =
-        "https://www.google.com/maps/dir/?api=1&origin=$pickUpLat,$pickUpLng&destination=$dropOffLat,$dropOffLng&dir_action=navigate";
-
+  launchGoogleMapFromSourceToDestination(pickUpLat, pickUpLng, dropOffLat, dropOffLng) async {
+    String directionAPIUrl = "https://www.google.com/maps/dir/?api=1&origin=$pickUpLat,$pickUpLng&destination=$dropOffLat,$dropOffLng&dir_action=navigate";
     if (await canLaunchUrl(Uri.parse(directionAPIUrl))) {
       await launchUrl(Uri.parse(directionAPIUrl));
     } else {
-      throw "Could not lauch google map";
+      print("Historial: Could not launch google map");
     }
   }
 
@@ -35,8 +27,10 @@ class _TripsDataListState extends State<TripsDataList> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: completedTripsRecordsFromDatabase.onValue,
-      builder: (BuildContext context, snapshotData) {
+      builder: (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshotData) {
+        print("Historial: Connection state: ${snapshotData.connectionState}");
         if (snapshotData.hasError) {
+          print("Historial: Error: ${snapshotData.error}");
           return const Center(
             child: Text(
               "Error Occurred. Try Later.",
@@ -50,70 +44,57 @@ class _TripsDataListState extends State<TripsDataList> {
         }
 
         if (snapshotData.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshotData.data?.snapshot.value == null) {
+          print("Historial: Snapshot data is null");
           return const Center(
-            child: CircularProgressIndicator(),
+            child: Text(
+              "No data available.",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
+              ),
+            ),
           );
         }
 
         Map dataMap = snapshotData.data!.snapshot.value as Map;
         List itemsList = [];
         dataMap.forEach((key, value) {
+          print("Historial: Adding item to list: $key => $value");
           itemsList.add({"key": key, ...value});
         });
+
+        print("Historial: Total items in the list: ${itemsList.length}");
 
         return ListView.builder(
           shrinkWrap: true,
           itemCount: itemsList.length,
-          itemBuilder: ((context, index) {
-            if (itemsList[index]["status"] != null &&
-                itemsList[index]["status"] == "ended") {
+          itemBuilder: (context, index) {
+            if (itemsList[index]["status"] != null && itemsList[index]["status"] == "ended") {
+              print("Historial: Item with 'ended' status found: ${itemsList[index]}");
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  cMethods.data(
-                    2,
-                    Text(itemsList[index]["tripID"].toString()),
-                  ),
-                  cMethods.data(
-                    1,
-                    Text(itemsList[index]["userName"].toString()),
-                  ),
-                  cMethods.data(
-                    1,
-                    Text(itemsList[index]["driverName"].toString()),
-                  ),
-                  cMethods.data(
-                    1,
-                    Text(itemsList[index]["carDetails"].toString()),
-                  ),
-                  cMethods.data(
-                    1,
-                    Text(itemsList[index]["publishDateTime"].toString()),
-                  ),
-                  cMethods.data(
-                    1,
-                    Text("\$ " + itemsList[index]["fareAmount"].toString()),
-                  ),
+                  cMethods.data(2, Text(itemsList[index]["tripID"].toString())),
+                  cMethods.data(1, Text(itemsList[index]["userName"].toString())),
+                  cMethods.data(1, Text(itemsList[index].containsKey("driverName") ? itemsList[index]["driverName"].toString() : "N/A")),
+                  cMethods.data(1, Text(itemsList[index].containsKey("carDetails") ? itemsList[index]["carDetails"].toString() : "N/A")),
+                  cMethods.data(1, Text(itemsList[index]["publishDateTime"].toString())),
+                  cMethods.data(1, Text("\$ " + (itemsList[index]["fareAmount"] ?? "N/A").toString())),
                   cMethods.data(
                     1,
                     ElevatedButton(
                       onPressed: () {
-                        String pickUpLat =
-                            itemsList[index]["pickUpLatLng"]["latitude"];
-                        String pickUpLng =
-                            itemsList[index]["pickUpLatLng"]["longitude"];
+                        String pickUpLat = itemsList[index]["pickUpLatLng"]["latitude"].toString();
+                        String pickUpLng = itemsList[index]["pickUpLatLng"]["longitude"].toString();
+                        String dropOffLat = itemsList[index]["dropOffLatLng"]["latitude"].toString();
+                        String dropOffLng = itemsList[index]["dropOffLatLng"]["longitude"].toString();
 
-                        String dropOffLat =
-                            itemsList[index]["dropOffLatLng"]["latitude"];
-                        String dropOffLng =
-                            itemsList[index]["dropOffLatLng"]["longitude"];
-
-                        launchGoogleMapFromSourceToDestination(
-                          pickUpLat,
-                          pickUpLng,
-                          dropOffLat,
-                          dropOffLng,
-                        );
+                        launchGoogleMapFromSourceToDestination(pickUpLat, pickUpLng, dropOffLat, dropOffLng);
                       },
                       child: const Text(
                         "View More",
@@ -127,9 +108,10 @@ class _TripsDataListState extends State<TripsDataList> {
                 ],
               );
             } else {
+              print("Historial: Item does not have 'ended' status or is missing: ${itemsList[index]}");
               return Container();
             }
-          }),
+          },
         );
       },
     );

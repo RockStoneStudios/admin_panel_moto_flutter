@@ -1,6 +1,5 @@
 import 'package:adminpanel/methods/common_methods.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/users_data_list.dart';
 
 class UsersPage extends StatefulWidget {
